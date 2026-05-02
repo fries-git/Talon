@@ -3,6 +3,11 @@ import websockets
 from tinydb import TinyDB
 import json
 db = TinyDB("db.json")
+from dotenv import load_dotenv
+load_dotenv()
+import os
+port = os.getenv("port", 5613)
+
 
 def getlatest():
     print("Getting the latest post.")
@@ -67,8 +72,8 @@ async def handler(websocket):
             }))
 
 async def main():
-    async with websockets.serve(handler, "localhost", 5613):
-        print("WebSocket server running on ws://localhost:5613")
+    async with websockets.serve(handler, "localhost", port):
+        print(f"WebSocket server running on ws://localhost:{port}")
         await asyncio.Future()
 
 if __name__ == "__main__":
