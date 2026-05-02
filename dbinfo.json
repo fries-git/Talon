@@ -1,0 +1,3 @@
+{"_default": {"1": {"username": "fries", "body": "hello folks this is the first post!", "title": "first post"}, "2": {"username": "fries", "body": "so what is this? this is sort of a revival of the claw server to be de-attached from the rotur ecosystem, as claw itself was part of the roturapi and couldnt be run individually like ochats can. so this is a wip reimplementation, the api isnt exactly the same as i had hoped but its pretty damn close.", "title": "second post"}}}
+
+This is just a backup of the db.json file which if that were to fail can be replaced with this.
