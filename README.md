@@ -1,4 +1,4 @@
-# TALON
+# Talon
 
 ### What is Talon?
 Talon is a remake of the RoturAPI stuck forum type server, [Claw](https://github.com/RoturTW/api/blob/main/handlers_posts.go). Claw has all functionality one would expect: Message posting, editing, and deleting, replies, likes, and some other cool stuff.
