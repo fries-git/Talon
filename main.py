@@ -8,6 +8,11 @@ load_dotenv()
 import os
 port = os.getenv("port", 5613)
 
+def deletepost(post_id):
+    print(f"deleting post with id: {post_id}")
+    db.remove(doc_ids=[post_id])
+    print("Post deleted.")
+    return {"status": "deleted"}
 
 def getlatest():
     print("Getting the latest post.")
@@ -34,11 +39,13 @@ def getcount(count):
 def decodemsg(message):
     if isinstance(message, str):
         message = json.loads(message)
+    id = message.get("id", "tempid")
     username = message.get("username", "postname")
     body = message.get("body", "tempbody")
     title = message.get("title", "temptitle")
 
     db.insert({
+        "id": id,
         "username": username,
         "body": body,
         "title": title
