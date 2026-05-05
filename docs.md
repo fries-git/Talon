@@ -1,11 +1,12 @@
 # Docs
-
-## Returns
+## SETUP
+To run it, create a .env with port=portnumber. Then run main.py and have users connect to it. More stuff will come in the future like server names so different Talon servers can be hosted for different reasons.
+## API
+### Returns
 Message Get: `{"username": (str), "title": (str), "body": (str)}`\
 Is returned when user requests a message. For many like the latest 10 messages, it slaps them in an array, in order, still in this format.
 
-## Posts
-
+### Posts
 Create Post: `{"type": "post", "username": (str), "title": (str), "body": (str)}`\
 Creates a post with the title and body specified. Username should always be the username of the logged in user regardless of if this uses Rotur or other.\
 Get Latest Post: `{"type": "get"}`\
