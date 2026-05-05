@@ -2,28 +2,24 @@ import asyncio
 import websockets
 from tinydb import TinyDB
 import json
-db = TinyDB("db.json")
 from dotenv import load_dotenv
 load_dotenv()
 import os
 port = os.getenv("port", 5613)
+storageloc = os.getenv("store", db.json)
 
-def deletepost(post_id):
-    print(f"deleting post with id: {post_id}")
-    db.remove(doc_ids=[post_id])
-    print("Post deleted.")
-    return {"status": "deleted"}
+db = TinyDB(storageloc)
 
 def getlatest():
-    print("Getting the latest post.")
+    print("getting the latest post:")
     posts = db.all()
     if posts:
         latest_post = posts[-1]
-        print(f"latest post is: {latest_post}")
+        print("yeah we did it")
         return latest_post
     else:
         print("no posts found")
-        return {"error": "No posts found"}
+        return {"error": "no posts found"}
     
 def getcount(count):
     print(f"getting the latest {count} posts")
@@ -50,7 +46,7 @@ def decodemsg(message):
         "body": body,
         "title": title
     })
-    print("Post saved.")
+    print("Post saved to the DB.")
     return {"status": "saved"}
 
 async def handler(websocket):
