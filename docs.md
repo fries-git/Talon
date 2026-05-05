@@ -1,6 +1,10 @@
 # Docs
 ## SETUP
-To run it, create a .env with port=portnumber. Then run main.py and have users connect to it. More stuff will come in the future like server names so different Talon servers can be hosted for different reasons.
+To run it, create a .env.\
+In the dotenv add:\
+port=portnumber\
+store=fileloc\
+Then run main.py and have users connect to it. More stuff will come in the future like server names so different Talon servers can be hosted for different reasons.
 ## API
 ### Returns
 Message Get: `{"username": (str), "title": (str), "body": (str)}`\
@@ -13,3 +17,6 @@ Get Latest Post: `{"type": "get"}`\
 Gets the latest post and returns it as the json specified in **Returns**.\
 Get Posts Count: `{"type": "getcount", "count": (int)}`\
 Gets the **n** latest posts where **n** is a positive integer.
+
+> [!NOTE]
+> The **fileloc** in the .env setup should be something like "db.json" (wrapped in quotes) or it may not work.
