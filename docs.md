@@ -1,9 +1,12 @@
 # Docs
 ## SETUP
-To run it, create a .env.\
+To run it, create `.env` in the main directory.\
 In the dotenv add:\
-port=portnumber\
-store=fileloc\
+
+```
+port=portnumber
+store=fileloc
+```
 Then run main.py and have users connect to it. More stuff will come in the future like server names so different Talon servers can be hosted for different reasons.
 ## API
 ### Returns
