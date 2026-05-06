@@ -8,6 +8,9 @@ import os
 port = os.getenv("port", 5613)
 storageloc = os.getenv("store", "db.json")
 
+print(f"Using port: {port}")
+print(f"Using storage location: {storageloc}")
+
 db = TinyDB(storageloc)
 
 def getlatest():
@@ -21,16 +24,22 @@ def getlatest():
         print("no posts found")
         return {"error": "no posts found"}
 
-def likepost(postnum):
+def likepost(postnum, username):
+
     print(f"liking post number {postnum}")
     posts = db.all()
     if 0 <= postnum < len(posts):
+        getusernames = posts[postnum].get("usersliked", [])
+        if username in getusernames:
+            print(f"{username} has already liked this post")
+            return {"error": "you have already liked this post"}
+        
         post = posts[postnum]
-        post['likes'] = str(int(post.get('likes', '0')) + 1)
+        post["usersliked"].append(username)
         db.update(post, doc_ids=[postnum + 1])
         print("post liked successfully")
-        return {"status": "successfully liked"}
-
+        return {"status": "liked"}
+    
 def getcount(count):
     print(f"getting the latest {count} posts")
     posts = db.all()
@@ -54,7 +63,8 @@ def decodemsg(message):
         "likes": "0",
         "username": username,
         "body": body,
-        "title": title
+        "title": title,
+        "usersliked": []
     })
     print("Post saved to the DB.")
     return {"status": "saved"}
@@ -72,6 +82,9 @@ async def handler(websocket):
                 response = decodemsg(gettype)
             elif msg_type == "get":
                 response = getlatest()
+            elif msg_type == "like":
+                postnum = int(gettype.get("postnum", -1))
+                response = likepost(postnum)
             elif msg_type == "getcount":
                 count = int(gettype.get("count", 1))
                 response = getcount(count)
@@ -85,7 +98,7 @@ async def handler(websocket):
             }))
 
 async def main():
-    async with websockets.serve(handler, "localhost", port):
+    async with websockets.serve(handler, "localhost", int(port)):
         print(f"WebSocket server running on ws://localhost:{port}")
         await asyncio.Future()
 
