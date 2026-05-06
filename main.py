@@ -38,7 +38,7 @@ def likepost(postnum, username):
         post["usersliked"].append(username)
         db.update(post, doc_ids=[postnum + 1])
         print("post liked successfully")
-        return {"status": "liked"}
+        return {"success": "liked"}
     
 def getcount(count):
     print(f"getting the latest {count} posts")
@@ -54,10 +54,14 @@ def getcount(count):
 def decodemsg(message):
     if isinstance(message, str):
         message = json.loads(message)
-    id = message.get("id", "tempid")
     username = message.get("username", "postname")
     body = message.get("body", "tempbody")
     title = message.get("title", "temptitle")
+    
+    if len(username) < 1 or len(body) < 25 or len(title) < 1:
+        # uh how do i get the specific case of which one is missing? so glad FUCKING COPILOT TRIED TO FINISH MY SENTENCE FOR ME.
+        print("Invalid post data. Missing username, title, or body.")
+        return {"error": "missing key data"}
 
     db.insert({
         "likes": "0",
