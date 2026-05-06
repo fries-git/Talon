@@ -1,5 +1,5 @@
 # Docs
-## SETUP
+## Serup
 To run it, create `.env` in the main directory.\
 In the dotenv add:
 
