@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 import os
 port = os.getenv("port", 5613)
-storageloc = os.getenv("store", db.json)
+storageloc = os.getenv("store", "db.json")
 
 db = TinyDB(storageloc)
 
@@ -20,7 +20,17 @@ def getlatest():
     else:
         print("no posts found")
         return {"error": "no posts found"}
-    
+
+def likepost(postnum):
+    print(f"liking post number {postnum}")
+    posts = db.all()
+    if 0 <= postnum < len(posts):
+        post = posts[postnum]
+        post['likes'] = str(int(post.get('likes', '0')) + 1)
+        db.update(post, doc_ids=[postnum + 1])
+        print("post liked successfully")
+        return {"status": "successfully liked"}
+
 def getcount(count):
     print(f"getting the latest {count} posts")
     posts = db.all()
