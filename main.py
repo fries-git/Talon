@@ -41,7 +41,7 @@ def decodemsg(message):
     title = message.get("title", "temptitle")
 
     db.insert({
-        "id": id,
+        "likes": "0",
         "username": username,
         "body": body,
         "title": title
