@@ -9,7 +9,7 @@ store=fileloc
 ```
 Then run main.py and have users connect to it. More stuff will come in the future like server names so different Talon servers can be hosted for different reasons.
 > [!NOTE]
-> The **"fileloc"** in the .env setup should be something like "db.json" (wrapped in quotes) or it may not work.
+> The **"fileloc"** in the .env setup should be something like "db.json" (wrapped in quotes) or it may not work, and the **"portnumber"** shoul be the integer value of the port you want to run the server on, default being 5613 though if I remember correctly that's not a good port for "production environments" but that's just what I was using.
 ## API
 ### Returns
 Message Get returns: `{"username": (str), "title": (str), "body": (str)}`\
