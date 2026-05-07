@@ -28,13 +28,16 @@ Gets the latest post and returns it as the json specified in **Returns**.\
 Get Posts Count: `{"type": "getcount", "count": (int)}`\
 Gets the **n** latest posts where **n** is a positive integer.
 
-> [!NOTE]
-> The features below are only planned currently not implemented
-> \
 ## Post Editing / Info
-Delete post:`{"type": "delete", "number": "(int)"}`\
-(Will delete that number post if user is in sudousers.txt)\
 Like post:`{"type": "like", "number": "(int)", "username": "(str)"}` \
 (Will add a like to that number post)\
+
+> [!NOTE]
+> The features below are only planned currently not implemented
+
+## Unimplemented:
+Delete post:`{"type": "delete", "number": "(int)"}`\
+(Will delete that number post if user is in sudousers.txt)\
+
 Report post:`{"type": "report", "number": "(int)"}`\
 (Will put that post in a report.txt file for the server host to look at)

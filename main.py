@@ -82,13 +82,14 @@ async def handler(websocket):
             else:
                 gettype = message
             msg_type = gettype.get("type")
+            username = gettype.get("username")
             if msg_type == "post":
                 response = decodemsg(gettype)
             elif msg_type == "get":
                 response = getlatest()
             elif msg_type == "like":
                 postnum = int(gettype.get("postnum", -1))
-                response = likepost(postnum)
+                response = likepost(postnum, username)
             elif msg_type == "getcount":
                 count = int(gettype.get("count", 1))
                 response = getcount(count)
