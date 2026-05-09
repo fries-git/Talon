@@ -4,31 +4,32 @@ To run it, create `.env` in the main directory.\
 In the dotenv add:
 
 ```
-port=portnumber
-store=fileloc
-bio=biostring
+port=(int)
+store=(str).json
+bio=(str)
+minimumlengthbody=(int)
+minimumlengthtitle=(int)
 ```
 Then run main.py and have users connect to it. More stuff will come in the future like server names so different Talon servers can be hosted for different reasons.
 > [!NOTE]
-> The **"fileloc"** in the .env setup should be something like "db.json" (wrapped in quotes) or it may not work, and the **"portnumber"** shoul be the integer value of the port you want to run the server on, default being 5613 though if I remember correctly that's not a good port for "production environments" but that's just what I was using, **bio** being a string that defines what topic or idea your instance is about.
+> The **"fileloc"** in the .env setup should be something like "db.json" (wrapped in quotes) or it may not work, and the **"portnumber"** should be the integer value of the port you want to run the server on, default being 5613 though if I remember correctly that's not a good port for "production environments" but that's just what I was using, **bio** being a string that defines what topic or idea your instance is about. minimumlengthbody is an int that defines a minimum body length in messages, and minimumlengthtitle is the same for titles. These default to 25 and 5 respectively.
 ## API
 ### Returns
 `{"type": "get"}` returns `{"username": (str), "title": (str), "body": (str) "likes": (int)},` for the latest message.\
 For the count variation like the latest 10 messages, it slaps them in an json array, in order, still in this format.\
 `{"type": "like", "number": "(int)", "username": "(str)"}` can return either `{"error": "you have already liked this post"}` if the user is in the posts liked array, or `{"success": "liked"}` if it is liked.
- `{"type": "post", "username": (str), "title": (str), "body": (str)}` returns: `{"status": "saved"}` if the post is saved. Returns: `{"error": "missing key data."}` if the post errors. This means that something, title, body, or username, either wasn't sent properly or was sent as less than the minimum required length. Title minimum is 1, Username minimum is 1, body minimum is 25, all can be configured in the .env via title = (int), etc. \
+`{"type": "post", "username": (str), "title": (str), "body": (str)}` returns: `{"status": "saved"}` if the post is saved. Returns: `{"error": "missing key data."}` if the post errors. This means that something, title, body, or username, either wasn't sent properly or was sent as less than the minimum required length. Title minimum is 5, Username minimum is 1, body minimum is 25, all except username are this by default but defined in the `.env`. (Read above.)
 `{"type" : "getbio"}` returns `{"success": (str)}` on success and `{"error": "bio is not set up or something errored"}` on failure, meaning either the bio wasnt sent properly or it was 0 characters long which should be handled before any of this happens but im dumb. :P
 
-> [!NOTE]
-> Fries lied to your ass and currently the .env doesnt let you change that stuff. But quite frankly he wants to play a game so he's leaving for now.
-
 ### Posts
-Create Post: `{"type": "post", "username": (str), "title": (str), "body": (str)}`\
+Create Post: `{"type": "post", "username": "(str)", "title": "(str)", "body": "(str)"}`\
 Creates a post with the title and body specified. Username should always be the username of the logged in user regardless of if this uses Rotur or other.\
 Get Latest Post: `{"type": "get"}`\
 Gets the latest post and returns it as the json specified in **Returns**.\
-Get Posts Count: `{"type": "getcount", "count": (int)}`\
-Gets the **n** latest posts where **n** is a positive integer.
+Get Posts Count: `{"type": "getcount", "count": "(int)"}`\
+Gets the **n** latest posts where **n** is a positive integer.\
+Search Post: `{"type": "search", "query": (str)}`\
+Returns any message with the query string in username, title, or body as a json array.
 
 ## Post Editing / Info
 Like post:`{"type": "like", "number": "(int)", "username": "(str)"}` \

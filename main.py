@@ -9,9 +9,15 @@ import os
 port = os.getenv("port", 5613)
 storageloc = os.getenv("store", "db.json")
 bio = os.getenv("bio", "Welcome! Whoever is running this has not yet setup a bio (which can be done in the .env file by defining bio.)")
+i = 1 # ignore this lmao
+minbody = int(os.getenv("minimumlengthbody", 25))
+mintitle = int(os.getenv("minimumlengthtitle", 5))
 
+
+# This code is disgusting I need to fix this.
 
 logger.Logger.cont("-------------------------------")
+logger.Logger.search("Talon is a work in progress, expect bugs and downtime. If you find any, please report them to me.")
 logger.Logger.like("Welcome to Talon, the Claw reimplementation!")
 logger.Logger.cont("Please make any pull requests, and suggest ideas!")
 logger.Logger.cont("You can reach out to me as fries on OChats or Barfpile (fries is the display name) on Discord.")
@@ -43,21 +49,40 @@ def getbio():
             return {"success": bio}
 
 def likepost(postnum, username):
-
     logger.Logger.info(f"liking post number {postnum}")
+    usersliked = post.get("usersliked", [])
+    post = posts[postnum]
     posts = db.all()
-    if 0 <= postnum < len(posts):
-        getusernames = posts[postnum].get("usersliked", [])
-        if username in getusernames:
-            logger.Logger.warning(f"{username} has already liked this post")
-            return {"error": "you have already liked this post"}
-        
-        post = posts[postnum]
-        post["usersliked"].append(username)
-        db.update(post, doc_ids=[postnum + 1])
-        logger.Logger.like(f"{username} liked post number {postnum}")
-        return {"success": "liked"}
-    
+    if not (0 <= postnum < len(posts)):
+        logger.Logger.error("post does not exist")
+        return {"error": "post not found"}
+    if username in usersliked:
+        logger.Logger.warning(f"{username} already liked this post")
+        return {"error": "already liked"}
+    usersliked.append(username)
+    db.update({
+        "usersliked": usersliked,
+        "likes": str(len(usersliked))
+    }, doc_ids=[post.doc_id])
+    logger.Logger.like(f"{username} liked post {postnum}")
+    return {
+        "success": True,
+        "likes": len(usersliked)
+    }
+
+def deletepost(postnum, username):
+    logger.Logger.info(f"deleting post number {postnum}")
+    posts = db.all()
+    if not (0 <= postnum < len(posts)):
+        logger.Logger.error("post does not exist")
+        return {"error": "post not found"}
+    if username != posts[postnum].get("username"):
+        logger.Logger.warning(f"{username} isnt the author of this post")
+        return {"error": "you are not the author of this post"}
+    db.remove(doc_ids=[posts[postnum].doc_id])
+    logger.Logger.delete(f"{username} deleted post {postnum}")
+    return {"success": "Message deleted successfully"}
+
 def getcount(count):
     logger.Logger.get(f"getting the latest {count} posts")
     posts = db.all()
@@ -77,7 +102,7 @@ def decodemsg(message):
     title = message.get("title", "temptitle")
     
     if len(username) < 1 or len(body) < 25 or len(title) < 1:
-        # uh how do i get the specific case of which one is missing? so glad FUCKING COPILOT TRIED TO FINISH MY SENTENCE FOR ME.
+        # uh how do i get the specific case of which one is missing without doing more elifs? so glad FUCKING COPILOT TRIED TO FINISH MY SENTENCE FOR ME.
         logger.Logger.error("Invalid post data. Missing username, title, or body.")
         return {"error": "missing key data"}
 
@@ -90,6 +115,19 @@ def decodemsg(message):
     })
     logger.Logger.success("Post saved to the DB.")
     return {"status": "saved"}
+
+def returnsearch(query):
+    logger.Logger.search(f"searching for {query}")
+    posts = db.all()
+    results = []
+    for post in posts:
+        if query.lower() in post.get("title", "").lower() or query.lower() in post.get("body", "").lower() or query.lower() in post.get("username", "").lower():
+            results.append(post)
+    if len(results) > 0:
+        logger.Logger.success(f"found {len(results)} results for query: {query}")
+    else:
+        logger.Logger.warning(f"no results found for query: {query}")
+    return results
 
 async def handler(websocket):
     async for message in websocket:
@@ -108,11 +146,17 @@ async def handler(websocket):
             elif msg_type == "like":
                 postnum = int(gettype.get("postnum", -1))
                 response = likepost(postnum, username)
+            elif msg_type == "deletepost":
+                postnum = int(gettype.get("postnum", -1))
+                response = deletepost(postnum, username)
             elif msg_type == "getcount":
                 count = int(gettype.get("count", 1))
                 response = getcount(count)
             elif msg_type == "getbio":
                 response = getbio()
+            elif msg_type == "search":
+                query = str(gettype.get("query", ""))
+                response = returnsearch(query)
             else:
                 response = {"error": "Unknown type"}
             await websocket.send(json.dumps(response))

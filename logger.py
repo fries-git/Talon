@@ -46,9 +46,19 @@ class Logger:
     @staticmethod
     def like(message: str):
         """Log like action"""
-        print(f"{Colors.BLUE}[♥]{Colors.RESET} {message}")
+        print(f"{Colors.MAGENTA}[♥]{Colors.RESET} {message}")
 
     @staticmethod
     def cont(message: str):
         """Log continue action"""
         print(f"{message}")
+
+    @staticmethod
+    def search(message: str):
+        """Log search action"""
+        print(f"{Colors.BLUE}[i]{Colors.RESET} {message}")
+    
+    @staticmethod
+    def delete(message: str):
+        """Log delete action"""
+        print(f"{Colors.RED}[🗑]{Colors.RESET} {message}")
