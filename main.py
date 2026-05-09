@@ -50,9 +50,9 @@ def getbio():
 
 def likepost(postnum, username):
     logger.Logger.info(f"liking post number {postnum}")
-    usersliked = post.get("usersliked", [])
     posts = db.all()
     post = posts[postnum]
+    usersliked = post.get("usersliked", [])
     if not (0 <= postnum < len(posts)):
         logger.Logger.error("post does not exist")
         return {"error": "post not found"}
@@ -160,6 +160,7 @@ async def handler(websocket):
             else:
                 response = {"error": "Unknown type"}
             await websocket.send(json.dumps(response))
+        
         except Exception as e:
             logger.Logger.error(f"Error occurred: {e}")
             await websocket.send(json.dumps({
