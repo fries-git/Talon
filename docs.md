@@ -34,6 +34,8 @@ Returns any message with the query string in username, title, or body as a json 
 ## Post Editing / Info
 Like post:`{"type": "like", "number": "(int)", "username": "(str)"}` \
 (Will add a like to that number post)\
+Delete post:`{"type": "deletepost", "postnumber": "(int)", "username": "(str)"}`\
+Will delete that number post if user is the author, eventually if user is that or in sudousers.json\
 
 ## Other Info
 Get server Bio:`{"type" : "getbio"}`
@@ -42,9 +44,6 @@ Get server Bio:`{"type" : "getbio"}`
 > The features below are only planned currently not implemented
 
 ## Unimplemented:
-Delete post:`{"type": "delete", "number": "(int)"}`\
-(Will delete that number post if user is in sudousers.json)\
-
 Report post:`{"type": "report", "number": "(int)"}`\
 (Will put that post in a reports.json file for the server host to look at)
 
