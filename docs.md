@@ -51,4 +51,4 @@ Get specific item:`{"type": "getpostnum", "number": "(int)"}`
 (Will get that specific number post.)
 
 # Important
-Fries will add verification. You will essentially send your token/login information, and get a key back that you can then use to send things, that's randomly shuffled every hour or so? Maybe every use? Idk.
+Fries will add verification. You will essentially send your token/login information, and get a key back that you can then use to send things, that's randomly shuffled every hour or so? Maybe every use? Idk. Fries will also probably add some sort of plugin system for doing fun things like maybe linking Ochats.
