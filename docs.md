@@ -6,16 +6,18 @@ In the dotenv add:
 ```
 port=portnumber
 store=fileloc
+bio=biostring
 ```
 Then run main.py and have users connect to it. More stuff will come in the future like server names so different Talon servers can be hosted for different reasons.
 > [!NOTE]
-> The **"fileloc"** in the .env setup should be something like "db.json" (wrapped in quotes) or it may not work, and the **"portnumber"** shoul be the integer value of the port you want to run the server on, default being 5613 though if I remember correctly that's not a good port for "production environments" but that's just what I was using.
+> The **"fileloc"** in the .env setup should be something like "db.json" (wrapped in quotes) or it may not work, and the **"portnumber"** shoul be the integer value of the port you want to run the server on, default being 5613 though if I remember correctly that's not a good port for "production environments" but that's just what I was using, **bio** being a string that defines what topic or idea your instance is about.
 ## API
 ### Returns
-Message Get returns: `{"username": (str), "title": (str), "body": (str) "likes": (int)},`\
-Is returned when user requests a message. For many like the latest 10 messages, it slaps them in an json array, in order, still in this format.\
-Like Post can return either `{"error": "you have already liked this post"}` if the user is in the posts liked array, or `{"success": "liked"}` if it is liked.
-Message Post returns: `{"status": "saved"}` if the post is saved. Returns: `{"error": "missing key data."}` if the post errors. This means that something, title, body, or username, either wasn't sent properly or was sent as less than the minimum required length. Title minimum is 1, Username minimum is 1, body minimum is 25, all can be configured in the .env via title = (int), etc. 
+`{"type": "get"}` returns `{"username": (str), "title": (str), "body": (str) "likes": (int)},`\
+For the count variation like the latest 10 messages, it slaps them in an json array, in order, still in this format.\
+`{"type": "like", "number": "(int)", "username": "(str)"}` can return either `{"error": "you have already liked this post"}` if the user is in the posts liked array, or `{"success": "liked"}` if it is liked.
+ `{"type": "post", "username": (str), "title": (str), "body": (str)}` returns: `{"status": "saved"}` if the post is saved. Returns: `{"error": "missing key data."}` if the post errors. This means that something, title, body, or username, either wasn't sent properly or was sent as less than the minimum required length. Title minimum is 1, Username minimum is 1, body minimum is 25, all can be configured in the .env via title = (int), etc. \
+`{"type" : "getbio"}` returns `{"success": (str)}` on success and `{"error": "bio is not set up or something errored"}` on failure, meaning either the bio wasnt sent properly or it was 0 characters long which should be handled before any of this happens but im dumb. :P
 
 > [!NOTE]
 > Fries lied to your ass and currently the .env doesnt let you change that stuff. But quite frankly he wants to play a game so he's leaving for now.
@@ -31,6 +33,9 @@ Gets the **n** latest posts where **n** is a positive integer.
 ## Post Editing / Info
 Like post:`{"type": "like", "number": "(int)", "username": "(str)"}` \
 (Will add a like to that number post)\
+
+## Other Info
+Get server Bio:`{"type" : "getbio"}`
 
 > [!NOTE]
 > The features below are only planned currently not implemented

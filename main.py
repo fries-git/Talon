@@ -8,6 +8,8 @@ load_dotenv()
 import os
 port = os.getenv("port", 5613)
 storageloc = os.getenv("store", "db.json")
+bio = os.getenv("bio", "Welcome! Whoever is running this has not yet setup a bio (which can be done in the .env file by defining bio.)")
+
 
 logger.Logger.cont("-------------------------------")
 logger.Logger.like("Welcome to Talon, the Claw reimplementation!")
@@ -30,6 +32,15 @@ def getlatest():
     else:
         logger.Logger.error("no posts found")
         return {"error": "no posts found"}
+    
+def getbio():
+        logger.Logger.get("Bio reuquested!")
+        if len(bio) < 1:
+            logger.Logger.warning("Something went wrong in the bio!")
+            return {"error": "bio is not set up or something errored"}
+        else:
+            logger.Logger.success("successfully got the bio!")
+            return {"success": bio}
 
 def likepost(postnum, username):
 
@@ -100,6 +111,8 @@ async def handler(websocket):
             elif msg_type == "getcount":
                 count = int(gettype.get("count", 1))
                 response = getcount(count)
+            elif msg_type == "getbio":
+                response = getbio()
             else:
                 response = {"error": "Unknown type"}
             await websocket.send(json.dumps(response))
