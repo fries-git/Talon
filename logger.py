@@ -19,16 +19,6 @@ class Logger:
         print(f"{Colors.GREEN}[+]{Colors.RESET} {message}")
     
     @staticmethod
-    def edit(message: str):
-        """Log an edit/modification action"""
-        print(f"{Colors.YELLOW}[~]{Colors.RESET} {message}")
-    
-    @staticmethod
-    def delete(message: str):
-        """Log a deletion action"""
-        print(f"{Colors.RED}[x]{Colors.RESET} {message}")
-    
-    @staticmethod
     def get(message: str):
         """Log a retrieval/query action"""
         print(f"{Colors.BLUE}[?]{Colors.RESET} {message}")
@@ -52,8 +42,13 @@ class Logger:
     def success(message: str):
         """Log success messages"""
         print(f"{Colors.GREEN}[✓]{Colors.RESET} {message}")
-    
+
     @staticmethod
-    def discord_message(username: str, message: str):
-        """Log Discord messages with special formatting"""
-        print(f"{Colors.GREEN}[+]{Colors.RESET} Discord Message | {Colors.CYAN}{username}{Colors.RESET}: {message}")
+    def like(message: str):
+        """Log like action"""
+        print(f"{Colors.BLUE}[♥]{Colors.RESET} {message}")
+
+    @staticmethod
+    def cont(message: str):
+        """Log continue action"""
+        print(f"{message}")

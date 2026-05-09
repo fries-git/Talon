@@ -9,13 +9,19 @@ import os
 port = os.getenv("port", 5613)
 storageloc = os.getenv("store", "db.json")
 
+logger.Logger.cont("-------------------------------")
+logger.Logger.like("Welcome to Talon, the Claw reimplementation!")
+logger.Logger.cont("Please make any pull requests, and suggest ideas!")
+logger.Logger.cont("You can reach out to me as fries on OChats or Barfpile (fries is the display name) on Discord.")
+logger.Logger.cont("--------------------------------")
+
 logger.Logger.info(f"Using port: {port}")
 logger.Logger.info(f"Using storage location: {storageloc}")
 
 db = TinyDB(storageloc)
 
 def getlatest():
-    logger.Logger.info("getting the latest post:")
+    logger.Logger.get("getting the latest post:")
     posts = db.all()
     if posts:
         latest_post = posts[-1]
@@ -38,11 +44,11 @@ def likepost(postnum, username):
         post = posts[postnum]
         post["usersliked"].append(username)
         db.update(post, doc_ids=[postnum + 1])
-        logger.Logger.success("post liked successfully")
+        logger.Logger.like(f"{username} liked post number {postnum}")
         return {"success": "liked"}
     
 def getcount(count):
-    logger.Logger.info(f"getting the latest {count} posts")
+    logger.Logger.get(f"getting the latest {count} posts")
     posts = db.all()
     if posts:
         latest_posts = posts[-count:]
