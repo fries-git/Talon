@@ -6,6 +6,9 @@ import logger
 from dotenv import load_dotenv
 load_dotenv()
 import os
+import logging
+logging.getLogger("websockets.server").disabled = True
+
 port = os.getenv("port", 5613)
 storageloc = os.getenv("store", "db.json")
 bio = os.getenv("bio", "Welcome! Whoever is running this has not yet setup a bio (which can be done in the .env file by defining bio.)")
@@ -13,15 +16,14 @@ i = 1 # ignore this lmao
 minbody = int(os.getenv("minimumlengthbody", 25))
 mintitle = int(os.getenv("minimumlengthtitle", 5))
 
-
 # This code is disgusting I need to fix this.
 
-logger.Logger.cont("-------------------------------")
+logger.Logger.cont("------------------------------->")
 logger.Logger.search("Talon is a work in progress, expect bugs and downtime. If you find any, please report them to me.")
 logger.Logger.like("Welcome to Talon, the Claw reimplementation!")
 logger.Logger.cont("Please make any pull requests, and suggest ideas!")
 logger.Logger.cont("You can reach out to me as fries on OChats or Barfpile (fries is the display name) on Discord.")
-logger.Logger.cont("--------------------------------")
+logger.Logger.cont("------------------------------->")
 
 logger.Logger.info(f"Using port: {port}")
 logger.Logger.info(f"Using storage location: {storageloc}")
