@@ -13,7 +13,7 @@ Then run main.py and have users connect to it. More stuff will come in the futur
 > The **"fileloc"** in the .env setup should be something like "db.json" (wrapped in quotes) or it may not work, and the **"portnumber"** shoul be the integer value of the port you want to run the server on, default being 5613 though if I remember correctly that's not a good port for "production environments" but that's just what I was using, **bio** being a string that defines what topic or idea your instance is about.
 ## API
 ### Returns
-`{"type": "get"}` returns `{"username": (str), "title": (str), "body": (str) "likes": (int)},`\
+`{"type": "get"}` returns `{"username": (str), "title": (str), "body": (str) "likes": (int)},` for the latest message.\
 For the count variation like the latest 10 messages, it slaps them in an json array, in order, still in this format.\
 `{"type": "like", "number": "(int)", "username": "(str)"}` can return either `{"error": "you have already liked this post"}` if the user is in the posts liked array, or `{"success": "liked"}` if it is liked.
  `{"type": "post", "username": (str), "title": (str), "body": (str)}` returns: `{"status": "saved"}` if the post is saved. Returns: `{"error": "missing key data."}` if the post errors. This means that something, title, body, or username, either wasn't sent properly or was sent as less than the minimum required length. Title minimum is 1, Username minimum is 1, body minimum is 25, all can be configured in the .env via title = (int), etc. \
@@ -42,7 +42,13 @@ Get server Bio:`{"type" : "getbio"}`
 
 ## Unimplemented:
 Delete post:`{"type": "delete", "number": "(int)"}`\
-(Will delete that number post if user is in sudousers.txt)\
+(Will delete that number post if user is in sudousers.json)\
 
 Report post:`{"type": "report", "number": "(int)"}`\
-(Will put that post in a report.txt file for the server host to look at)
+(Will put that post in a reports.json file for the server host to look at)
+
+Get specific item:`{"type": "getpostnum", "number": "(int)"}`
+(Will get that specific number post.)
+
+# Important
+Fries will add verification. You will essentially send your token/login information, and get a key back that you can then use to send things, that's randomly shuffled every hour or so? Maybe every use? Idk.
