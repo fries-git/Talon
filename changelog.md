@@ -1,6 +1,6 @@
 # Changelog
 
-The github commit messages are getting too long so here's where I will start including more detailed changelogs.\
+The github commit messages are getting too long so here's where I will start including more detailed changelogs. This will only get updated for major stuff.\
 Added more types to `logger.py`.\
 Fixed a bunch in main.py.\
 > Added message deleting and searching.\

@@ -51,8 +51,8 @@ def getbio():
 def likepost(postnum, username):
     logger.Logger.info(f"liking post number {postnum}")
     usersliked = post.get("usersliked", [])
-    post = posts[postnum]
     posts = db.all()
+    post = posts[postnum]
     if not (0 <= postnum < len(posts)):
         logger.Logger.error("post does not exist")
         return {"error": "post not found"}
