@@ -60,7 +60,8 @@ def getbio():
             logger.Logger.success("successfully got the bio!")
             return {"success": bio}
 
-def likepost(postnum, username):
+def likepost(postnum, token):
+    username = authusername(token)
     logger.Logger.info(f"liking post number {postnum}")
     posts = db.all()
     post = posts[postnum]
