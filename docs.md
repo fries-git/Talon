@@ -16,10 +16,13 @@ Then run main.py and have users connect to it. More stuff will come in the futur
 > The **"fileloc"** in the .env setup should be something like "db.json" (wrapped in quotes) or it may not work, and the **"portnumber"** should be the integer value of the port you want to run the server on, default being 5613 though if I remember correctly that's not a good port for "production environments" but that's just what I was using, **bio** being a string that defines what topic or idea your instance is about. minimumlengthbody is an int that defines a minimum body length in messages, and minimumlengthtitle is the same for titles. These default to 25 and 5 respectively. The Webhook is for posting to discord or fluxer or originchats, really anything where you can post to it and it shows up like a message. It can also be some other webhook for automation, or something else.
 ## API
 ### Returns
-`{"type": "get"}` returns `{"username": (str), "title": (str), "body": (str) "likes": (int)},` for the latest message.\
+`{"type": "get"}` returns `{"username": (str), "title": (str), "body": (str) "likes": (int)},` for the latest message.
 For the count variation like the latest 10 messages, it slaps them in an json array, in order, still in this format.\
-`{"type": "like", "number": "(int)", "username": "(str)"}` can return either `{"error": "you have already liked this post"}` if the user is in the posts liked array, or `{"success": "liked"}` if it is liked.
-`{"type": "post", "username": (str), "title": (str), "body": (str)}` returns: `{"status": "saved"}` if the post is saved. Returns: `{"error": "missing key data."}` if the post errors. This means that something, title, body, or username, either wasn't sent properly or was sent as less than the minimum required length. Title minimum is 5, Username minimum is 1, body minimum is 25, all except username are this by default but defined in the `.env`. (Read above.)
+\
+`{"type": "like", "number": "(int)", "username": "(str)"}` can return either `{"error": "you have already liked this post"}` if the user is in the posts liked array, or `{"success": "liked"}` if it is liked.\
+\
+`{"type": "post", "username": (str), "title": (str), "body": (str)}` returns: `{"status": "saved"}` if the post is saved. Returns: `{"error": "missing key data."}` if the post errors. This means that something, title, body, or username, either wasn't sent properly or was sent as less than the minimum required length. Title minimum is 5, Username minimum is 1, body minimum is 25, all except username are this by default but defined in the `.env`. (Read above.)\
+\
 `{"type" : "getbio"}` returns `{"success": (str)}` on success and `{"error": "bio is not set up or something errored"}` on failure, meaning either the bio wasnt sent properly or it was 0 characters long which should be handled before any of this happens but im dumb. :P
 
 ### Posts
