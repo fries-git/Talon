@@ -21,13 +21,13 @@ For the count variation like the latest 10 messages, it slaps them in an json ar
 \
 `{"type": "like", "number": "(int)", "username": "(str)"}` can return either `{"error": "you have already liked this post"}` if the user is in the posts liked array, or `{"success": "liked"}` if it is liked.\
 \
-`{"type": "post", "username": (str), "title": (str), "body": (str)}` returns: `{"status": "saved"}` if the post is saved. Returns: `{"error": "missing key data."}` if the post errors. This means that something, title, body, or username, either wasn't sent properly or was sent as less than the minimum required length. Title minimum is 5, Username minimum is 1, body minimum is 25, all except username are this by default but defined in the `.env`. (Read above.)\
+`{"type": "post", "token": (str), "title": (str), "body": (str)}` returns: `{"status": "saved"}` if the post is saved. Returns: `{"error": "missing key data."}` if the post errors. This means that something, title, body, or username, either wasn't sent properly or was sent as less than the minimum required length. Title minimum is 5, Username minimum is 1, body minimum is 25, all except username are this by default but defined in the `.env`. (Read above.)\
 \
 `{"type" : "getbio"}` returns `{"success": (str)}` on success and `{"error": "bio is not set up or something errored"}` on failure, meaning either the bio wasnt sent properly or it was 0 characters long which should be handled before any of this happens but im dumb. :P
 
 ### Posts
-Create Post: `{"type": "post", "username": "(str)", "title": "(str)", "body": "(str)"}`\
-Creates a post with the title and body specified. Username should always be the username of the logged in user regardless of if this uses Rotur or other.\
+Create Post: `{"type": "post", "token": "(str)", "title": "(str)", "body": "(str)"}`\
+Creates a post with the title and body specified. Token should always be the token of the logged in user via Rotur.
 Get Latest Post: `{"type": "get"}`\
 Gets the latest post and returns it as the json specified in **Returns**.\
 Get Posts Count: `{"type": "getcount", "count": "(int)"}`\
@@ -36,9 +36,9 @@ Search Post: `{"type": "search", "query": (str)}`\
 Returns any message with the query string in username, title, or body as a json array.
 
 ## Post Editing / Info
-Like post:`{"type": "like", "number": "(int)", "username": "(str)"}` \
+Like post:`{"type": "like", "number": "(int)", "token": "(str)"}` \
 (Will add a like to that number post)\
-Delete post:`{"type": "deletepost", "postnumber": "(int)", "username": "(str)"}`\
+Delete post:`{"type": "deletepost", "postnumber": "(int)", "token": "(str)"}`\
 Will delete that number post if user is the author, eventually if user is that or in sudousers.json\
 
 ## Other Info

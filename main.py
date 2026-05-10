@@ -36,6 +36,10 @@ else:
 
 db = TinyDB(storageloc)
 
+def authusername(token):
+    output = requests.get(f"https://api.rotur.dev/me?auth={token}")
+    return(output.json().get("username", "error"))
+
 def getlatest():
     logger.Logger.get("getting the latest post:")
     posts = db.all()
@@ -79,16 +83,17 @@ def likepost(postnum, username):
     }
 
 def deletepost(postnum, username):
+    usernamed = authusername(username)
     logger.Logger.info(f"deleting post number {postnum}")
     posts = db.all()
     if not (0 <= postnum < len(posts)):
         logger.Logger.error("post does not exist")
         return {"error": "post not found"}
-    if username != posts[postnum].get("username"):
-        logger.Logger.warning(f"{username} isnt the author of this post")
+    if usernamed != posts[postnum].get("username"):
+        logger.Logger.warning(f"{usernamed} isnt the author of this post")
         return {"error": "you are not the author of this post"}
     db.remove(doc_ids=[posts[postnum].doc_id])
-    logger.Logger.delete(f"{username} deleted post {postnum}")
+    logger.Logger.delete(f"{usernamed} deleted post {postnum}")
     return {"success": "Message deleted successfully"}
 
 def getcount(count):
@@ -102,45 +107,48 @@ def getcount(count):
         logger.Logger.error("No posts found.")
         return {"error": "No posts found"}
 
-def decodemsg(message):
+def makepost(message):
     if isinstance(message, str):
         message = json.loads(message)
-    username = message.get("username", "postname")
-    body = message.get("body", "tempbody")
-    title = message.get("title", "temptitle")
-    
-    if len(username) < 1 or len(body) < 25 or len(title) < 1:
-        # uh how do i get the specific case of which one is missing without doing more elifs? so glad FUCKING COPILOT TRIED TO FINISH MY SENTENCE FOR ME.
-        logger.Logger.error("Invalid post data. Missing username, title, or body.")
-        return {"error": "missing key data"}
 
-    db.insert({
-        "likes": "0",
-        "username": username,
-        "body": body,
-        "title": title,
-        "usersliked": []
-    })
-    if len(webhook_url) > 0:
-        try:
-            requests.post(webhook_url, json={
-                "username": f"{username} - Talon Post Notification",
-                "embeds": [
-                    {
-                        "title": f"{title} - {username}",
-                        "description": body,
-                        "color": 1127128, # Decimal color (Red)
-        }
-    ]
+    username = authusername(message.get("token", ""))
+
+    if not username == "error":
+        logger.Logger.info(f"Authenticated user: {username}")
+        body = message.get("body", "tempbody")
+        title = message.get("title", "temptitle")
+
+        if len(username) < 1 or len(body) < 25 or len(title) < 1:
+            # uh how do i get the specific case of which one is missing without doing more elifs? so glad FUCKING COPILOT TRIED TO FINISH MY SENTENCE FOR ME.
+            logger.Logger.error("Invalid post data. Missing username, title, or body or invalid authentication.")
+            return {"error": "missing key data or auth failure"}
+        else:
+            db.insert({
+                "likes": "0",
+                "username": username,
+                "body": body,
+                "title": title,
+                "usersliked": []
             })
-            logger.Logger.success("Successfully sent webhook notification.")
-        except Exception as e:
-            logger.Logger.error(f"Failed to send webhook notification: {e}")
-    logger.Logger.success("Post saved to the DB.")
-    return {"status": "saved"}
-
-def testauth(token):
-    requests.get(f"https://api.rotur.dev/me?auth={token}")
+            if len(webhook_url) > 0:
+                try:
+                    requests.post(webhook_url, json={
+                        "username": f"{username} - Talon Post Notification",
+                        "embeds": [
+                            {
+                                "title": f"{title} - {username}",
+                                "description": body,
+                                "color": 1127128
+                }
+            ]
+                    })
+                    logger.Logger.success("Successfully sent webhook notification.")
+                except Exception as e:
+                    logger.Logger.error(f"Failed to send webhook notification: {e}")
+            logger.Logger.success("Post saved to the DB.")
+            return {"success": "saved"}
+    else:
+        return {"error": "authentication failed"}
 
 def returnsearch(query):
     logger.Logger.search(f"searching for {query}")
@@ -164,17 +172,17 @@ async def handler(websocket):
             else:
                 gettype = message
             msg_type = gettype.get("type")
-            username = gettype.get("username")
+            token = gettype.get("token")
             if msg_type == "post":
-                response = decodemsg(gettype)
+                response = makepost(gettype)
             elif msg_type == "get":
                 response = getlatest()
             elif msg_type == "like":
                 postnum = int(gettype.get("postnum", -1))
-                response = likepost(postnum, username)
+                response = likepost(postnum, token)
             elif msg_type == "deletepost":
                 postnum = int(gettype.get("postnum", -1))
-                response = deletepost(postnum, username)
+                response = deletepost(postnum, token)
             elif msg_type == "getcount":
                 count = int(gettype.get("count", 1))
                 response = getcount(count)
