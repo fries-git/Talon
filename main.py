@@ -139,6 +139,9 @@ def decodemsg(message):
     logger.Logger.success("Post saved to the DB.")
     return {"status": "saved"}
 
+def testauth(token):
+    requests.get(f"https://api.rotur.dev/me?auth={token}")
+
 def returnsearch(query):
     logger.Logger.search(f"searching for {query}")
     posts = db.all()
