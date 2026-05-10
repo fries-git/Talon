@@ -1,5 +1,6 @@
 import asyncio
 import websockets
+import requests
 from tinydb import TinyDB
 import json
 import logger
@@ -9,6 +10,7 @@ import os
 import logging
 logging.getLogger("websockets.server").disabled = True
 
+webhook_url = os.getenv("webhook", "")
 port = os.getenv("port", 5613)
 storageloc = os.getenv("store", "db.json")
 bio = os.getenv("bio", "Welcome! Whoever is running this has not yet setup a bio (which can be done in the .env file by defining bio.)")
@@ -27,6 +29,10 @@ logger.Logger.cont("------------------------------->")
 
 logger.Logger.info(f"Using port: {port}")
 logger.Logger.info(f"Using storage location: {storageloc}")
+if len(webhook_url) > 0:
+    logger.Logger.info("webhook URL found.")
+else:
+    logger.Logger.warning("no webhook URL found.")
 
 db = TinyDB(storageloc)
 
@@ -115,6 +121,21 @@ def decodemsg(message):
         "title": title,
         "usersliked": []
     })
+    if len(webhook_url) > 0:
+        try:
+            requests.post(webhook_url, json={
+                "username": f"{username} - Talon Post Notification",
+                "embeds": [
+                    {
+                        "title": f"{title} - {username}",
+                        "description": body,
+                        "color": 1127128, # Decimal color (Red)
+        }
+    ]
+            })
+            logger.Logger.success("Successfully sent webhook notification.")
+        except Exception as e:
+            logger.Logger.error(f"Failed to send webhook notification: {e}")
     logger.Logger.success("Post saved to the DB.")
     return {"status": "saved"}
 
