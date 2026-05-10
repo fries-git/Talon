@@ -10,6 +10,8 @@ import os
 import logging
 logging.getLogger("websockets.server").disabled = True
 
+
+
 webhook_url = os.getenv("webhook", "")
 port = os.getenv("port", 5613)
 storageloc = os.getenv("store", "db.json")
@@ -52,7 +54,7 @@ def getlatest():
         return {"error": "no posts found"}
     
 def getbio():
-        logger.Logger.get("Bio reuquested!")
+        logger.Logger.get("bio requested!")
         if len(bio) < 1:
             logger.Logger.warning("Something went wrong in the bio!")
             return {"error": "bio is not set up or something errored"}
@@ -137,7 +139,7 @@ def makepost(message):
                         "username": f"{username} - Talon Post Notification",
                         "embeds": [
                             {
-                                "title": f"{title} - {username}",
+                                "title": f"{title} - A post by: {username}",
                                 "description": body,
                                 "color": 1127128
                 }
@@ -189,6 +191,8 @@ async def handler(websocket):
                 response = getcount(count)
             elif msg_type == "getbio":
                 response = getbio()
+            elif msg_type == "testauth":
+                response = authusername(token)
             elif msg_type == "search":
                 query = str(gettype.get("query", ""))
                 response = returnsearch(query)
