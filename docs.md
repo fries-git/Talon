@@ -2,7 +2,7 @@
 
 - Quick note, everything here is as up-to-date as I can keep it, please help out if you notice anything wrong/misspelled/confusing.
 
-## Setup
+# Setup
 To run it, create `.env` in the main directory.\
 In the dotenv add:
 
@@ -23,8 +23,8 @@ Webhook:\
 Then run main.py and have users connect to it. More stuff will come in the future like server names so different Talon servers can be hosted for different reasons.
 > [!NOTE]
 > The **"fileloc"** in the .env setup should be something like "db.json" (wrapped in quotes) or it may not work, and the **"portnumber"** should be the integer value of the port you want to run the server on, default being 5613 though if I remember correctly that's not a good port for "production environments" but that's just what I was using, **bio** being a string that defines what topic or idea your instance is about. minimumlengthbody is an int that defines a minimum body length in messages, and minimumlengthtitle is the same for titles. These default to 25 and 5 respectively. The Webhook is for posting to discord or fluxer or originchats, really anything where you can post to it and it shows up like a message. It can also be some other webhook for automation, or something else.
-## API
-### Returns
+# API
+## Returns
 `{"type": "get"}` returns `{"username": (str), "title": (str), "body": (str) "likes": (int)},` for the latest message.
 For the count variation like the latest 10 messages, it slaps them in an json array, in order, still in this format.\
 \
