@@ -51,7 +51,7 @@ Gets the **n** latest posts where **n** is a positive integer.\
 Search Post: `{"type": "search", "query": (str)}`\
 Returns any message with the query string in username, title, or body as a json array.
 
-## Post Editing / Info
+### Post Editing / Info
 Like post:`{"type": "like", "number": "(int)", "token": "(str)"}` \
 (Will add a like to that number post)\
 \
