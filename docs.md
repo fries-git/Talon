@@ -2,7 +2,7 @@
 
 - Quick note, everything here is as up-to-date as I can keep it, please help out if you notice anything wrong/misspelled/confusing.
 
-# Setup
+## Setup
 To run it, create `.env` in the main directory.\
 In the dotenv add:
 
@@ -36,6 +36,8 @@ For the count variation like the latest 10 messages, it slaps them in an json ar
 \
 `{"type" : "testauth", "token" : "(usertoken)"}` returns the username as a string or the word "error" as just a string. No json involved as this isn't meant to actually be used in clients, but is instead an internal function used in the code, that I figured would do no harm if publicly accessible.
 
+## Calls
+
 ### Posts
 Create Post: `{"type": "post", "token": "(str)", "title": "(str)", "body": "(str)"}`\
 Creates a post with the title and body specified. Token should always be the token of the logged in user via Rotur.\
@@ -56,14 +58,14 @@ Like post:`{"type": "like", "number": "(int)", "token": "(str)"}` \
 Delete post:`{"type": "deletepost", "postnumber": "(int)", "token": "(str)"}`\
 Will delete that number post if user is the author, eventually if user is that or in sudousers.json
 
-## Other Info
+### Other Info
 Get server Bio:`{"type" : "getbio"}`\
 Gets the server's bio as is set by the host.\
 \
 Test authentication:`{"type" : "testauth", "token" : "(usertoken)"}`\
 Can be used to test if the authentication is working, Talon, Rotur API, and client sided.
 
-## Unimplemented:
+### Unimplemented:
 Report post:`{"type": "report", "number": "(int)"}`\
 (Will put that post in a reports.json file for the server host to look at)
 
