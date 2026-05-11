@@ -151,6 +151,7 @@ def makepost(message):
             logger.Logger.success("Post saved to the DB.")
             return {"success": "saved"}
     else:
+        logger.Logger.error("recieved a post from unauthed user.")
         return {"error": "authentication failed"}
 
 def returnsearch(query):
