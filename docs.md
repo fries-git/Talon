@@ -1,6 +1,6 @@
 # Docs
 
-- Quick note, everything here is as up-to-date as I can keep it, please help out if you notice anything wrong/misspelled/confusing.
+Quick note, everything here is as up-to-date as I can keep it, please help out if you notice anything wrong/misspelled/confusing.
 
 ## Setup
 To run it, create `.env` in the main directory.\
