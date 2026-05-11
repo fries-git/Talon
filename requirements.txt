@@ -1,0 +1,5 @@
+asyncio
+websockets
+requests
+tinydb
+python-dotenv
