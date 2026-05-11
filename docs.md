@@ -16,7 +16,7 @@ webhook=(str)
 ```
 \
 Example:\
-![Example](exampleenv.png)
+![Example](exampleenv.png)\
 Webhook:\
 ![Example](examplewebhook.png)
 
