@@ -16,7 +16,9 @@ webhook=(str)
 ```
 \
 Example:\
-![Example](image-1.png)
+![Example](exampleenv.png)
+Webhook:\
+![Example](examplewebhook.png)
 
 Then run main.py and have users connect to it. More stuff will come in the future like server names so different Talon servers can be hosted for different reasons.
 > [!NOTE]
