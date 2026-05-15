@@ -195,6 +195,8 @@ async def handler(websocket):
                 response = getcount(count)
             elif msg_type == "getbio":
                 response = getbio()
+            elif msg_type == "reply":
+                response = replytopost(gettype)
             elif msg_type == "testauth":
                 response = authusername(token)
             elif msg_type == "search":
