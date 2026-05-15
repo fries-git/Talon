@@ -154,7 +154,7 @@ def makepost(message):
         logger.Logger.error("recieved a post from unauthed user.")
         return {"error": "authentication failed"}
 
-def replytopost(message)
+def replytopost(message):
     makepost(message)
 
 def returnsearch(query):
